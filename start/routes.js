@@ -17,10 +17,17 @@ const Route = use('Route')
 
 Route.on('/').render('home')
 
-// Route.get('/posts', 'PostController.index')
-Route.get('/posts', 'PostController.all')
-Route.get('/posts/:id', 'PostController.details')
-Route.post('/posts', 'PostController.create')
+Route.group(() => {
+  // AUTH
+  Route.post('auth/register', 'UserController.register')
+  Route.post('auth/login', 'UserController.login')
 
-Route.get('test', () => 'Hello World')
-Route.get('test/:id', ({ params }) => `This is the id: ${params.id}`)
+  // POSTS
+  Route.get('posts', 'PostController.all')
+  Route.get('posts/:id', 'PostController.details')
+  Route.post('posts', 'PostController.create')
+
+  // TEST
+  Route.get('test', () => 'Hello World')
+  Route.get('test/:id', ({ params }) => `This is the id: ${params.id}`)
+}).prefix('api/v1/')
