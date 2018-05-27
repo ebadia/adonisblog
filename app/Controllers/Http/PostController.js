@@ -24,23 +24,26 @@ class PostController {
   }
 
   async details({ auth, params, response }) {
-    const user = await auth.getUser()
+    // const user = await auth.getUser()
     const { id } = params
-    const post = await user.posts().fetch(id)
+
+    // const post = await user.posts().fetch(id)
+    const post = await Post.find(id)
     response.send(post)
   }
 
   async create({ auth, request, response }) {
     // do validation
 
-    const user = await auth.getUser()
+    // const user = await auth.getUser()
     const { title, body } = request.all()
     const post = new Post()
     post.fill({
       title,
       body
     })
-    await user.posts().save(post)
+    // await user.posts().save(post)
+    await post.save()
     return post
     // post.title = request.post().title
     // post.body = request.post().body
@@ -48,14 +51,18 @@ class PostController {
   }
 
   async delete({ auth, request, response, params }) {
-    const user = await auth.getUser()
+    // const user = await auth.getUser()
     const { id } = params
-    const post = await PostController.find(id)
-    if (post.user_id !== user.id) {
-      return response.status(403)
+    const post = await Post.find(id)
+    // if (post.user_id !== user.id) {
+    //   return response.status(403)
+    // }
+    if ( post === null ) {
+      return response.status(404).send(id)
     }
     await post.delete()
-    return post
+    // return post
+    return response.send(id)
   }
 }
 
