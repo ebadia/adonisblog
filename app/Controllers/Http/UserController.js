@@ -19,6 +19,13 @@ class UserController {
 
     response.send(user)
   }
+
+  async posts({ request, response }) {
+    const posts = await User.query()
+      .with('posts')
+      .fetch()
+    return posts
+  }
 }
 
 module.exports = UserController

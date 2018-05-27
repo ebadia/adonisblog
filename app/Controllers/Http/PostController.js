@@ -16,14 +16,17 @@ class PostController {
     })
   }
 
-  async all({ auth, response }) {
-    const user = await auth.getUser()
-    const posts = await user.posts().fetch()
+  async all({ response }) {
+    // const user = await auth.getUser()„
+    // const posts = await user.posts().fetch()
+    const posts = await Post.all()
     response.send(posts)
   }
 
-  async details({ params, response }) {
-    const post = await Post.find(params.id)
+  async details({ auth, params, response }) {
+    const user = await auth.getUser()
+    const { id } = params
+    const post = await user.posts().fetch(id)
     response.send(post)
   }
 
@@ -42,6 +45,17 @@ class PostController {
     // post.title = request.post().title
     // post.body = request.post().body
     // await post.save()
+  }
+
+  async delete({ auth, request, response, params }) {
+    const user = await auth.getUser()
+    const { id } = params
+    const post = await PostController.find(id)
+    if (post.user_id !== user.id) {
+      return response.status(403)
+    }
+    await post.delete()
+    return post
   }
 }
 

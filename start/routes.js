@@ -26,6 +26,7 @@ Route.group(() => {
   Route.get('posts', 'PostController.all')
   Route.get('posts/:id', 'PostController.details')
   Route.post('posts', 'PostController.create')
+  Route.delete('posts/:id', 'PostController.delete')
 
   // TEST
   Route.get('test', () => 'Hello World')
