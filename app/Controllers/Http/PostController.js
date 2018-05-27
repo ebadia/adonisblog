@@ -53,7 +53,7 @@ class PostController {
   async delete({ auth, request, response, params }) {
     // const user = await auth.getUser()
     const { id } = params
-    const post = await Post.find(id)
+    const post = await Post.find(id) 
     // if (post.user_id !== user.id) {
     //   return response.status(403)
     // }
